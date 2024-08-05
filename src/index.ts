@@ -10,9 +10,16 @@ const app = createApp({
 // This class handles all desposits, be it ether, ERC20 or NFTs
 const wallet = createWallet();
 app.addAdvanceHandler(wallet.handler);
+interface Todo {
+  id: number;            // or number, depending on the type of presentId
+  nameOfTodo: string;
+  completed: boolean;
+}
 
-let AllTodo:any = [];
+let AllTodo:Todo[] = [];
 let id:number = 0;
+
+
 
 // log incoming advance request
 app.addAdvanceHandler(async ({ metadata, payload }) => {
@@ -27,20 +34,21 @@ app.addAdvanceHandler(async ({ metadata, payload }) => {
             nameOfTodo:jsonpayload.name,
             completed:false
           }
-          await app.createNotice({payload:stringToHex(String(todo))});
           console.log("all todos b4",AllTodo);
           AllTodo.push(todo);
           console.log("all todos after",AllTodo);
           
-          id = id +1;
+          id+=1;
           console.log("id after",id);
+
+          await app.createNotice({payload:stringToHex(String(todo))});
           
-          return presentId;
+          return "accept";
         }else if(jsonpayload.method === "completeTodo"){
             console.log("deleting todo");
-            let id = hexToString(jsonpayload.id);
-            if(AllTodo[Number(id)].completed === false){
-                AllTodo[Number(id)]={
+            let _id = hexToString(jsonpayload.id);
+            if(AllTodo[Number(_id)].completed === false){
+                AllTodo[Number(_id)]={
                     id:0,
                     nameOfTodo:"",
                     completed:true
@@ -63,9 +71,9 @@ app.addInspectHandler(async (data) => {
   const route = hexToString(payload);
 
   if (route === "totalTodo") {
-    app.createReport({payload:numberToHex(id)})
+    app.createReport({payload:stringToHex(String(id))})
   }else if(route === "todos"){
-    app.createReport({payload:stringToHex(AllTodo)})
+    app.createReport({payload:stringToHex(String(AllTodo))})
   }else{
     app.createReport({payload:stringToHex("route not implemented")})
   }

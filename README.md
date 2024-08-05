@@ -1,5 +1,5 @@
 # About
-its a Todo list with two functions to update state "addTodo" and "complete todo"
+its a Todo list with two functions to update state "addTodo" and "complete todo". Its built with deroll library 
 
 # Getting Started
 Below you'll find instructions on how setting up this dapp locally.
@@ -19,7 +19,7 @@ cartesi-cli
 git clone 
 
 #### Install NPM packages
-npm i  install
+yarn  install
 
 #### Build and run the dapp via cartesi-cli
 cartesi build 
@@ -31,3 +31,4 @@ cartesi run
 -cartesi send generic
 
 -add the method e.g {"method":"addTodo","name":"submit this project before 12am August 6 2024"}
+
