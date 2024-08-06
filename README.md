@@ -85,7 +85,7 @@ interact
 ```js
 description - NumberOfTodos 
 ```
-interact with <bold>curl</bold> on your terminal
+interact with `curl` on your terminal
 
 ```sh
  curl http://localhost:8080/inspect/NumberOfTodos
@@ -94,7 +94,7 @@ interact with <bold>curl</bold> on your terminal
 ```js
 description - todos 
 ```
-interact with <bold>curl</bold> on your terminal
+interact with `curl` on your terminal
 
 ```sh
  curl http://localhost:8080/inspect/todos
