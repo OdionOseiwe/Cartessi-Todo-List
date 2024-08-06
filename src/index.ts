@@ -34,7 +34,6 @@ app.addAdvanceHandler(async (data) => {
             nameOfTodo:jsonpayload.name,
             completed:false
           }
-          console.log("all todos b4",AllTodo);
           AllTodo.push(todo);
           console.log("all todos after",AllTodo);
           
@@ -48,15 +47,14 @@ app.addAdvanceHandler(async (data) => {
             console.log("deleting todo");
             let _id = hexToString(jsonpayload.id);
             const todoById = AllTodo.findIndex((todo) => todo.id === Number(_id)&& !todo.completed);
-            if(todoById != -1){
-              AllTodo.splice(todoById, 1);
+            if (todoById === -1) return false;
+            AllTodo.splice(todoById, 1);
                 await app.createReport({payload:stringToHex("deleted")});
                 return "accept"
-            }else{
+        }else{
                 await app.createReport({ payload: stringToHex("Todo not found") });
-            }
-           
         }
+           
     } catch (e) {
         await app.createReport({ payload: stringToHex(String(e)) });
         return "reject";
@@ -65,20 +63,18 @@ app.addAdvanceHandler(async (data) => {
 
 app.addInspectHandler(async (data) => {
   const payload = data["payload"];
-  console.log(payload);
-  const jsonpayload = JSON.parse(hexToString(payload));
-  const route = hexToString(payload);
-  console.log(route, jsonpayload, "route and jsonpayload");
-  if (route === "NumberOfTodos") {
+  const splited = payload.split("/");
+  const route = splited[0]; 
+  if (route === "numberOfTodos") {
     app.createReport({payload:stringToHex(String(id))})
   }else if(route === "todos"){
     app.createReport({payload:stringToHex(String(AllTodo))})
-  }else if(route === "todoById"){
-    let id = jsonpayload.id;
-    let todo = AllTodo.find(todo => todo.id === id);
+  }else if(route === "id"){
+    const id = parseInt(String(splited.at(-1)));
+    let todo = AllTodo.find((todo)=> todo.id === id);
     app.createReport({payload:stringToHex(String(todo))})
-
-  }else{
+  }
+  else{
     app.createReport({payload:stringToHex("bad request")})
   }
 

@@ -69,7 +69,7 @@ description - deletetodo
 interact
     - *via `cartesi cli`*, access your terminal in another window and input these instructions below:
   
-    ```
+    ```sh
     cartesi send generic \
     --dapp=0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e \
     --chain-id=31337 \
