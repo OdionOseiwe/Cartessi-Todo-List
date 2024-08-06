@@ -22,10 +22,10 @@ let id:number = 0;
 
 
 // log incoming advance request
-app.addAdvanceHandler(async ({ metadata, payload }) => {
+app.addAdvanceHandler(async (data) => {
     let todo;
     try {
-        const jsonpayload = JSON.parse(hexToString(payload));
+        const jsonpayload = JSON.parse(hexToString(data.payload));
         if (jsonpayload.method === "addTodo") {
           console.log("adding todo");
           let presentId = id;
@@ -44,18 +44,16 @@ app.addAdvanceHandler(async ({ metadata, payload }) => {
           await app.createNotice({payload:stringToHex(String(todo))});
           
           return "accept";
-        }else if(jsonpayload.method === "completeTodo"){
+        }else if(jsonpayload.method === "deletetodo"){ // when you delete todo you have completed it 
             console.log("deleting todo");
             let _id = hexToString(jsonpayload.id);
-            if(AllTodo[Number(_id)].completed === false){
-                AllTodo[Number(_id)]={
-                    id:0,
-                    nameOfTodo:"",
-                    completed:true
-                }
+            const todoById = AllTodo.findIndex((todo) => todo.id === Number(_id)&& !todo.completed);
+            if(todoById != -1){
+              AllTodo.splice(todoById, 1);
+                await app.createReport({payload:stringToHex("deleted")});
                 return "accept"
             }else{
-                await app.createReport({ payload: stringToHex("could not delete todo") });
+                await app.createReport({ payload: stringToHex("Todo not found") });
             }
            
         }
@@ -68,14 +66,20 @@ app.addAdvanceHandler(async ({ metadata, payload }) => {
 app.addInspectHandler(async (data) => {
   const payload = data["payload"];
   console.log(payload);
+  const jsonpayload = JSON.parse(hexToString(payload));
   const route = hexToString(payload);
-
-  if (route === "totalTodo") {
+  console.log(route, jsonpayload, "route and jsonpayload");
+  if (route === "NumberOfTodos") {
     app.createReport({payload:stringToHex(String(id))})
   }else if(route === "todos"){
     app.createReport({payload:stringToHex(String(AllTodo))})
+  }else if(route === "todoById"){
+    let id = jsonpayload.id;
+    let todo = AllTodo.find(todo => todo.id === id);
+    app.createReport({payload:stringToHex(String(todo))})
+
   }else{
-    app.createReport({payload:stringToHex("route not implemented")})
+    app.createReport({payload:stringToHex("bad request")})
   }
 
 });
