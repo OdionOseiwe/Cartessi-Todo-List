@@ -46,6 +46,18 @@ sample
 ```json
 {"method":"addTodo","name":"submit Cartesi to do before 11:59pm today"}
 ```
+interact
+    - *via `cartesi cli`*, access your terminal in another window and input these instructions below:
+  
+    ```sh
+    cartesi send generic \
+    --dapp=0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e \
+    --chain-id=31337 \
+    --rpc-url=http://127.0.0.1:8545 \
+    --mnemonic-passphrase="test test test test test test test test test test test junk" \
+    --mnemonic-index=0 \
+    --input='{"method":"addTodo","name":"submit Cartesi to do before 11:59pm today"}'
+    ```
 
 ```js
 description - deletetodo 
@@ -53,6 +65,20 @@ description - deletetodo
 ```json
 {"method":"delete","id":1}
 ```
+
+interact
+    - *via `cartesi cli`*, access your terminal in another window and input these instructions below:
+  
+    ```sh
+    cartesi send generic \
+    --dapp=0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e \
+    --chain-id=31337 \
+    --rpc-url=http://127.0.0.1:8545 \
+    --mnemonic-passphrase="test test test test test test test test test test test junk" \
+    --mnemonic-index=0 \
+    --input='{"method":"delete","id":1}'
+    ```
+
 
 #### addInspectHandler
 
