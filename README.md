@@ -20,7 +20,7 @@ Here are some packages you need to have installed on your PC:
 
 1. Clone this repo
    ```sh
-   git clone https://github.com/Ebukachuqz/cartesi-todoapp.git
+   git clone https://github.com/OdionOseiwe/Cartessi-Todo-List
    ```
 2. Install NPM packages
    ```sh
